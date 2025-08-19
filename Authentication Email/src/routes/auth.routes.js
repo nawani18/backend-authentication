@@ -1,13 +1,15 @@
 const express = require("express");
 const authMiddleware = require("../middleware/auth.middleware");
+const authController = require("../controllers/auth.controller");
 
 const router = express.Router();
 
-router.post("/register", authMiddleware.validateMail, (req, res) => {
-  const { email, fullName, password } = req.body;
-  res.status(201).json({
-    data: { email, fullName, password },
-  });
-});
+router.post(
+  "/register",
+  authMiddleware.validateMail,
+  authController.registerUser
+);
+
+router.get("/verify", authController.verifyUser);
 
 module.exports = router;

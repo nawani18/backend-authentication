@@ -1,0 +1,6 @@
+1. Turn on 2 factor verification for your Gmail Account
+https://myaccount.google.com/signinoptions/two-step-verification
+2. Follow This Link to generate app password to use with nodemailer
+https://myaccount.google.com/apppasswords
+
+3. Ek window popup hoga wahi par he password ko copy kr lena
