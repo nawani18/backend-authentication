@@ -11,5 +11,7 @@ router.post(
 );
 
 router.get("/verify", authController.verifyUser);
+router.post("/login", authController.loginUser);
+router.post("/resend-verification", authController.resendLink);
 
 module.exports = router;
