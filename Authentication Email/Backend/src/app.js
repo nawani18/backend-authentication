@@ -11,5 +11,10 @@ app.use(express.json());
 
 // use routes
 app.use("/api/auth", authRoutes);
+app.use("/", (req, res) => {
+  res.status(200).json({
+    message: "Host Success",
+  });
+});
 
 module.exports = app;
