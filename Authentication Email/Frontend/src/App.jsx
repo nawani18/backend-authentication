@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ResendMail from "./pages/ResendMail";
 import VerifyMail from "./pages/VerifyMail";
+import RegistrationSuccess from "./pages/RegistrationSuccess";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/resend-verification" element={<ResendMail />} />
       <Route path="/verify/:token" element={<VerifyMail />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/register-success" element={<RegistrationSuccess />} />
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );

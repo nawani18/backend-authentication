@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../api/axios";
 import "./Login.scss";
 
 const Login = () => {
@@ -13,11 +14,25 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      // TODO: Implement login API call
+      const response = await api.post("/auth/login", data);
+      console.log(response);
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (error) {
-      toast.error(error.message || "Login failed");
+      const status = error.response?.status;
+      switch (status) {
+        case 401:
+          toast.error("Invalid password");
+          break;
+        case 404:
+          toast.error("User does not exist");
+          break;
+        case 403:
+          toast.error("Email not verified. Please verify your email first");
+          break;
+        default:
+          toast.error("Login failed. Please try again");
+      }
     }
   };
 

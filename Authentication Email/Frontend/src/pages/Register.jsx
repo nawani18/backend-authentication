@@ -14,11 +14,24 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const respose = await api.post("/auth/register", data);
-      toast.success("Registration successful! Please check your email.");
-      navigate("/verify-email");
+      const res = await api.post("/auth/register", data);
+
+      if (res.status === 200) {
+        toast.success("Registration successful! Please check your email.");
+        navigate("/register-success");
+      } else {
+        toast.error(res.data.message || "Verification failed");
+      }
     } catch (error) {
-      toast.error(error.message || "Registration failed");
+      if (error.response && error.response.status === 409) {
+        toast.info("Email already exists");
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            error.message ||
+            "Registration failed"
+        );
+      }
     }
   };
 

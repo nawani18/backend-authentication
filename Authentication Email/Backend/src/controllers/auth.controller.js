@@ -15,7 +15,7 @@ async function registerUser(req, res) {
   const userExists = await userModel.findOne({ email }); // Check if user already exists with same email
 
   if (userExists) {
-    return res.status(400).json({
+    return res.status(409).json({
       message: "User already Exists", // If user exists, send error response
     });
   }
@@ -104,7 +104,7 @@ async function loginUser(req, res) {
   const userExists = await userModel.findOne({ email }); // Check if user exists
 
   if (!userExists) {
-    return res.status(401).json({
+    return res.status(404).json({
       message: "User Not Exists", // If user does not exist
     });
   }
@@ -118,7 +118,7 @@ async function loginUser(req, res) {
 
   const verifyedUser = userExists.isVerified; // Check if user verified
   if (!verifyedUser) {
-    return res.status(401).json({
+    return res.status(403).json({
       message: "User Not verifyed", // User not verified
     });
   }
@@ -155,7 +155,7 @@ async function resendLink(req, res) {
     }
 
     if (user.isVerified) {
-      return res.status(400).json({
+      return res.status(409).json({
         message: "User Already Verifyed", // If already verified
       });
     }
@@ -165,14 +165,14 @@ async function resendLink(req, res) {
       expiresIn: "10m",
     });
 
-    const verificationURL = `http://localhost:3000/api/auth/verify?token=${token}`;
+    const verificationURL = `http://localhost:5173/verify/${token}`;
 
     // Mail details for resending verification email
     const mailDetails = {
       from: `Verify Email ${process.env.GMAIL_USER}`,
       to: email,
       subject: "Verify Your Email Address",
-      html: `<h2 style="color:#333;">Hello ${fullName},</h2>
+      html: `<h2 style="color:#333;">Hello ${user.fullName},</h2>
       <p style="font-size:16px; color:#555;">
         Please verify your email address by clicking the button below:
       </p>
@@ -184,12 +184,12 @@ async function resendLink(req, res) {
       </p>
       <p style="font-size:14px; color:#888;">
         Or copy and paste this link into your browser:<br>
-        <a href="${verificationURL}" style="color:#4CAF50;">{{verificationURL}}</a>
+        <a href="${verificationURL}" style="color:#4CAF50;">${verificationURL}</a>
       </p>`,
     };
 
     await transporter.sendMail(mailDetails); // Send verification mail again
-    res.status(201).json({ message: "Verification Email Sent Again" }); // Success response
+    res.status(200).json({ message: "Verification Email Sent Again" }); // Success response
   } catch (error) {
     res.status(500).json({
       message: "Internal Server Error", // Handle server errors
