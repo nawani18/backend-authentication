@@ -34,7 +34,7 @@ async function registerUser(req, res) {
   });
 
   // Create verification link with token
-  const verificationURL = `http://localhost:5173/verify/${token}`;
+  const verificationURL = `https://email-auth-018.netlify.app/verify/${token}`;
 
   // Mail details for sending verification email
   const mailDetails = {
@@ -165,7 +165,7 @@ async function resendLink(req, res) {
       expiresIn: "10m",
     });
 
-    const verificationURL = `http://localhost:5173/verify/${token}`;
+    const verificationURL = `https://email-auth-018.netlify.app/verify/${token}`;
 
     // Mail details for resending verification email
     const mailDetails = {
